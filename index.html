@@ -113,7 +113,7 @@ footer {
 
 <body>
 
-<h1>Happy 6 Months Babyyyyyyyy💕</h1>
+<h1>Happy 6 Months, My Love 💕</h1>
 
 <div class="card">
   <p>
@@ -136,16 +136,16 @@ footer {
 
 <!-- BACKGROUND MUSIC -->
 <audio id="loveSound" loop>
-  <source src="perfect.mp3" type="audio/mpeg">
+  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_4c6d8c9fcb.mp3" type="audio/mpeg">
   Your browser does not support the audio element.
 </audio>
 
 <script>
-// MUSIC
+/* BACKGROUND MUSIC */
 const sound = document.getElementById("loveSound");
 
-function playMusicFrom(timeInSeconds = 0) {
-  sound.currentTime = timeInSeconds;
+// Try autoplay, fallback if blocked
+function playMusic() {
   sound.volume = 0;
   sound.play().then(() => {
     let vol = 0;
@@ -158,27 +158,19 @@ function playMusicFrom(timeInSeconds = 0) {
       }
     }, 30);
   }).catch(err => {
-    console.log("Autoplay blocked. Waiting for user interaction.");
+    console.log("Autoplay blocked, will play on first click.");
   });
 }
 
-// Try autoplay when page loads
-window.addEventListener("load", () => {
-  playMusicFrom(20);
-});
+// Play music on first user interaction if autoplay blocked
+document.body.addEventListener("click", playMusic, { once: true });
+document.body.addEventListener("touchstart", playMusic, { once: true });
 
-// Fallback: play on first click/touch
-document.body.addEventListener("click", () => {
-  if (sound.paused) playMusicFrom(0);
-}, { once: true });
-document.body.addEventListener("touchstart", () => {
-  if (sound.paused) playMusicFrom(0);
-}, { once: true });
-
-// MODAL
+/* MODAL */
 const modal = document.getElementById("modal");
 const openBtn = document.getElementById("openSurprise");
 const typingText = document.getElementById("typingText");
+
 const message = "Will you marry me one day babyyy and be mine forever and in every lifetime ?🥹💕\n\nWill you keep loving me forever?";
 
 openBtn.addEventListener("click", openModal);
@@ -186,11 +178,12 @@ openBtn.addEventListener("touchstart", openModal);
 
 function openModal() {
   modal.classList.add("show");
-  if (sound.paused) playMusicFrom(0);
+  // play music if not already playing
+  if (sound.paused) playMusic();
   startTyping();
 }
 
-// TYPING EFFECT
+/* TYPING EFFECT */
 let index = 0;
 function startTyping() {
   typingText.innerHTML = "";
@@ -202,12 +195,7 @@ function startTyping() {
   }, 40);
 }
 
-// CLOSE MODAL
-document.getElementById("yesBtn").addEventListener("click", () => {
-  modal.classList.remove("show");
-});
-
-// HEARTS
+/* HEARTS */
 function createHeart() {
   const heart = document.createElement("div");
   heart.classList.add("heart");
@@ -219,7 +207,7 @@ function createHeart() {
 }
 setInterval(createHeart, 400);
 
-// COUNTDOWN
+/* COUNTDOWN — CHANGE THIS DATE 💕 */
 const startDate = new Date("2025-07-08");
 const countdownEl = document.getElementById("countdown");
 
@@ -235,10 +223,46 @@ function updateCountdown() {
   countdownEl.innerHTML = `💞 ${days} days ${hours}h ${minutes}m ${seconds}s of loving you`;
 }
 
+// Initial call
 updateCountdown();
+
+// Update countdown every second
 setInterval(updateCountdown, 1000);
 
+
+/* YES BUTTON */
+document.getElementById("yesBtn").addEventListener("click", () => {
+  modal.classList.remove("show");
+});
+// Function to play music with fade-in
+function playMusic() {
+  sound.volume = 0; // start muted
+  sound.play().then(() => {
+    let vol = 0;
+    const fadeIn = setInterval(() => {
+      if (vol < 1) {
+        vol += 0.01;
+        sound.volume = vol;
+      } else {
+        clearInterval(fadeIn);
+      }
+    }, 30);
+  }).catch(err => {
+    console.log("Autoplay blocked, will play on first click.");
+  });
+}
+
+// Play music on first user interaction (for mobile/browser autoplay rules)
+document.body.addEventListener("click", playMusic, { once: true });
+document.body.addEventListener("touchstart", playMusic, { once: true });
+
 </script>
+<!-- BACKGROUND MUSIC -->
+<audio id="loveSound" loop>
+  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_4c6d8c9fcb.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+
 
 </body>
 </html>
