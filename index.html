@@ -112,8 +112,12 @@ footer {
 </head>
 
 <body>
+<audio id="loveSound" loop>
+  <source src=""C:\Users\Asus\OneDrive\Desktop\6\Ed Sheeran - Perfect (Official Music Video).mp3"" type="audio/mpeg">
+ 
+</audio>
 
-<h1>Happy 6 Months, My Love 💕</h1>
+<h1>Happy 6 Months Babyyyyyyyy💕</h1>
 
 <div class="card">
   <p>
@@ -134,11 +138,7 @@ footer {
   </div>
 </div>
 
-<!-- BACKGROUND MUSIC -->
-<audio id="loveSound" loop>
-  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_4c6d8c9fcb.mp3" type="audio/mpeg">
-  Your browser does not support the audio element.
-</audio>
+
 
 <script>
 /* BACKGROUND MUSIC */
@@ -259,10 +259,43 @@ document.body.addEventListener("touchstart", playMusic, { once: true });
 </script>
 <!-- BACKGROUND MUSIC -->
 <audio id="loveSound" loop>
-  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_4c6d8c9fcb.mp3" type="audio/mpeg">
+  <source src=""C:\Users\Asus\OneDrive\Desktop\6\Ed Sheeran - Perfect (Official Music Video).mp3"" type="audio/mpeg">
   Your browser does not support the audio element.
 </audio>
+<script>
+const sound = document.getElementById("loveSound");
+
+// Play music from a specific time with fade-in
+function playMusicFrom(timeInSeconds = 0) {
+  sound.currentTime = timeInSeconds; // start from this time
+  sound.volume = 0; // start muted
+  sound.play().then(() => {
+    let vol = 0;
+    const fadeIn = setInterval(() => {
+      if (vol < 1) {
+        vol += 0.01;
+        sound.volume = vol;
+      } else {
+        clearInterval(fadeIn);
+      }
+    }, 30);
+  }).catch(err => {
+    console.log("Autoplay blocked. Waiting for user interaction.");
+  });
+}
+
+// Try to play music automatically when page loads
+window.addEventListener("load", () => {
+  playMusicFrom(20); // change 30 to any number of seconds you want
+});
+
+// Fallback: play on first click if autoplay blocked
+document.body.addEventListener("click", () => {
+  if (sound.paused) playMusicFrom(30);
+}, { once: true });
+</script>
 
 
 </body>
 </html>
+
