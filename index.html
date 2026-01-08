@@ -6,113 +6,24 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-body {
-  margin: 0;
-  font-family: 'Comic Sans MS', 'Poppins', cursive;
-  background: linear-gradient(180deg, #ffd6e8, #ffeaf4);
-  overflow-x: hidden;
-  text-align: center;
-  color: #ff5fa2;
-}
-
-h1 {
-  margin-top: 60px;
-  font-size: clamp(1.8em, 5vw, 2.7em);
-}
-
-p {
-  font-size: 1.15em;
-  padding: 0 20px;
-}
-
-.card {
-  background: #fff0f7;
-  border-radius: 25px;
-  padding: 30px;
-  margin: 30px auto;
-  width: 90%;
-  max-width: 500px;
-  box-shadow: 0 10px 30px rgba(255,105,180,0.25);
-}
-
-button {
-  background: #ff85b3;
-  border: none;
-  padding: 15px 25px;
-  font-size: 1em;
-  border-radius: 30px;
-  color: white;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-button:hover {
-  background: #ff5fa2;
-  transform: scale(1.05);
-}
-
-/* MODAL */
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100vh;
-  width: 100vw;
-  background: rgba(255, 214, 232, 0.6);
-  backdrop-filter: blur(6px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  visibility: hidden;
-  opacity: 0;
-  transition: 0.4s;
-  z-index: 10;
-}
-
-.modal-content {
-  background: #fff0f7;
-  border-radius: 25px;
-  padding: 30px;
-  width: 85%;
-  max-width: 400px;
-  box-shadow: 0 15px 40px rgba(255,105,180,0.35);
-}
-
-.modal.show {
-  visibility: visible;
-  opacity: 1;
-}
-
-/* HEARTS */
-.heart {
-  position: fixed;
-  bottom: -20px;
-  font-size: 22px;
-  animation: float 6s linear infinite;
-  color: #ff69b4;
-}
-
-@keyframes float {
-  from { transform: translateY(0); opacity: 1; }
-  to { transform: translateY(-100vh); opacity: 0; }
-}
-
-footer {
-  margin: 40px 0;
-  color: #ff85b3;
-}
-
-/* Countdown */
-#countdown {
-  font-size: 1em;
-  margin-top: 15px;
-  color: #ff3f8e;
-}
+/* --- Your existing styles remain unchanged --- */
+body { margin: 0; font-family: 'Comic Sans MS', 'Poppins', cursive; background: linear-gradient(180deg, #ffd6e8, #ffeaf4); overflow-x: hidden; text-align: center; color: #ff5fa2; }
+h1 { margin-top: 60px; font-size: clamp(1.8em, 5vw, 2.7em); }
+p { font-size: 1.15em; padding: 0 20px; }
+.card { background: #fff0f7; border-radius: 25px; padding: 30px; margin: 30px auto; width: 90%; max-width: 500px; box-shadow: 0 10px 30px rgba(255,105,180,0.25); }
+button { background: #ff85b3; border: none; padding: 15px 25px; font-size: 1em; border-radius: 30px; color: white; cursor: pointer; transition: 0.3s; }
+button:hover { background: #ff5fa2; transform: scale(1.05); }
+.modal { position: fixed; top: 0; left: 0; height: 100vh; width: 100vw; background: rgba(255, 214, 232, 0.6); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; visibility: hidden; opacity: 0; transition: 0.4s; z-index: 10; }
+.modal-content { background: #fff0f7; border-radius: 25px; padding: 30px; width: 85%; max-width: 400px; box-shadow: 0 15px 40px rgba(255,105,180,0.35); }
+.modal.show { visibility: visible; opacity: 1; }
+.heart { position: fixed; bottom: -20px; font-size: 22px; animation: float 6s linear infinite; color: #ff69b4; }
+@keyframes float { from { transform: translateY(0); opacity: 1; } to { transform: translateY(-100vh); opacity: 0; } }
+footer { margin: 40px 0; color: #ff85b3; }
+#countdown { font-size: 1em; margin-top: 15px; color: #ff3f8e; }
 </style>
 </head>
 
 <body>
-
 
 <h1>Happy 6 Months Babyyyyyyyy💕</h1>
 
@@ -135,14 +46,18 @@ footer {
   </div>
 </div>
 
-
+<!-- BACKGROUND MUSIC -->
+<audio id="loveSound" loop>
+  <source src="perfect.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
 
 <script>
-/* BACKGROUND MUSIC */
+/* --- Music Setup --- */
 const sound = document.getElementById("loveSound");
 
-// Try autoplay, fallback if blocked
-function playMusic() {
+function playMusicFrom(timeInSeconds = 0) {
+  sound.currentTime = timeInSeconds;
   sound.volume = 0;
   sound.play().then(() => {
     let vol = 0;
@@ -155,19 +70,24 @@ function playMusic() {
       }
     }, 30);
   }).catch(err => {
-    console.log("Autoplay blocked, will play on first click.");
+    console.log("Autoplay blocked. Music will start on user interaction.");
   });
 }
 
-// Play music on first user interaction if autoplay blocked
-document.body.addEventListener("click", playMusic, { once: true });
-document.body.addEventListener("touchstart", playMusic, { once: true });
+// Try to autoplay on load (may be blocked)
+window.addEventListener("load", () => {
+  playMusicFrom(20); // start from 20 seconds
+});
 
-/* MODAL */
+// Fallback: play on first click/touch if blocked
+document.body.addEventListener("click", () => { if (sound.paused) playMusicFrom(20); }, { once: true });
+document.body.addEventListener("touchstart", () => { if (sound.paused) playMusicFrom(20); }, { once: true });
+
+
+/* --- Modal & Typing --- */
 const modal = document.getElementById("modal");
 const openBtn = document.getElementById("openSurprise");
 const typingText = document.getElementById("typingText");
-
 const message = "Will you marry me one day babyyy and be mine forever and in every lifetime ?🥹💕\n\nWill you keep loving me forever?";
 
 openBtn.addEventListener("click", openModal);
@@ -175,12 +95,10 @@ openBtn.addEventListener("touchstart", openModal);
 
 function openModal() {
   modal.classList.add("show");
-  // play music if not already playing
-  if (sound.paused) playMusic();
+  if (sound.paused) playMusicFrom(20);
   startTyping();
 }
 
-/* TYPING EFFECT */
 let index = 0;
 function startTyping() {
   typingText.innerHTML = "";
@@ -192,7 +110,12 @@ function startTyping() {
   }, 40);
 }
 
-/* HEARTS */
+document.getElementById("yesBtn").addEventListener("click", () => {
+  modal.classList.remove("show");
+});
+
+
+/* --- Hearts --- */
 function createHeart() {
   const heart = document.createElement("div");
   heart.classList.add("heart");
@@ -204,7 +127,8 @@ function createHeart() {
 }
 setInterval(createHeart, 400);
 
-/* COUNTDOWN — CHANGE THIS DATE 💕 */
+
+/* --- Countdown --- */
 const startDate = new Date("2025-07-08");
 const countdownEl = document.getElementById("countdown");
 
@@ -219,81 +143,10 @@ function updateCountdown() {
 
   countdownEl.innerHTML = `💞 ${days} days ${hours}h ${minutes}m ${seconds}s of loving you`;
 }
-
-// Initial call
 updateCountdown();
-
-// Update countdown every second
 setInterval(updateCountdown, 1000);
 
-
-/* YES BUTTON */
-document.getElementById("yesBtn").addEventListener("click", () => {
-  modal.classList.remove("show");
-});
-// Function to play music with fade-in
-function playMusic() {
-  sound.volume = 0; // start muted
-  sound.play().then(() => {
-    let vol = 0;
-    const fadeIn = setInterval(() => {
-      if (vol < 1) {
-        vol += 0.01;
-        sound.volume = vol;
-      } else {
-        clearInterval(fadeIn);
-      }
-    }, 30);
-  }).catch(err => {
-    console.log("Autoplay blocked, will play on first click.");
-  });
-}
-
-// Play music on first user interaction (for mobile/browser autoplay rules)
-document.body.addEventListener("click", playMusic, { once: true });
-document.body.addEventListener("touchstart", playMusic, { once: true });
-
 </script>
-<!-- BACKGROUND MUSIC -->
-<audio id="loveSound" loop>
-  <source src="perfect.mp3" type="audio/mpeg">
-  Your browser does not support the audio element.
-</audio>
-<script>
-const sound = document.getElementById("loveSound");
-
-// Play music from a specific time with fade-in
-function playMusicFrom(timeInSeconds = 0) {
-  sound.currentTime = timeInSeconds; // start from this time
-  sound.volume = 0; // start muted
-  sound.play().then(() => {
-    let vol = 0;
-    const fadeIn = setInterval(() => {
-      if (vol < 1) {
-        vol += 0.01;
-        sound.volume = vol;
-      } else {
-        clearInterval(fadeIn);
-      }
-    }, 30);
-  }).catch(err => {
-    console.log("Autoplay blocked. Waiting for user interaction.");
-  });
-}
-
-// Try to play music automatically when page loads
-window.addEventListener("load", () => {
-  playMusicFrom(20); // change 30 to any number of seconds you want
-});
-
-// Fallback: play on first click if autoplay blocked
-document.body.addEventListener("click", () => {
-  if (sound.paused) playMusicFrom(30);
-}, { once: true });
-</script>
-
 
 </body>
 </html>
-
-
