@@ -113,7 +113,6 @@ footer {
 
 <body>
 
-
 <h1>Happy 6 Months Babyyyyyyyy💕</h1>
 
 <div class="card">
@@ -135,137 +134,19 @@ footer {
   </div>
 </div>
 
-
-
-<script>
-/* BACKGROUND MUSIC */
-const sound = document.getElementById("loveSound");
-
-// Try autoplay, fallback if blocked
-function playMusic() {
-  sound.volume = 0;
-  sound.play().then(() => {
-    let vol = 0;
-    const fadeIn = setInterval(() => {
-      if (vol < 1) {
-        vol += 0.01;
-        sound.volume = vol;
-      } else {
-        clearInterval(fadeIn);
-      }
-    }, 30);
-  }).catch(err => {
-    console.log("Autoplay blocked, will play on first click.");
-  });
-}
-
-// Play music on first user interaction if autoplay blocked
-document.body.addEventListener("click", playMusic, { once: true });
-document.body.addEventListener("touchstart", playMusic, { once: true });
-
-/* MODAL */
-const modal = document.getElementById("modal");
-const openBtn = document.getElementById("openSurprise");
-const typingText = document.getElementById("typingText");
-
-const message = "Will you marry me one day babyyy and be mine forever and in every lifetime ?🥹💕\n\nWill you keep loving me forever?";
-
-openBtn.addEventListener("click", openModal);
-openBtn.addEventListener("touchstart", openModal);
-
-function openModal() {
-  modal.classList.add("show");
-  // play music if not already playing
-  if (sound.paused) playMusic();
-  startTyping();
-}
-
-/* TYPING EFFECT */
-let index = 0;
-function startTyping() {
-  typingText.innerHTML = "";
-  index = 0;
-  const interval = setInterval(() => {
-    typingText.innerHTML += message[index];
-    index++;
-    if (index >= message.length) clearInterval(interval);
-  }, 40);
-}
-
-/* HEARTS */
-function createHeart() {
-  const heart = document.createElement("div");
-  heart.classList.add("heart");
-  heart.innerHTML = "💗";
-  heart.style.left = Math.random() * 100 + "vw";
-  heart.style.animationDuration = (Math.random() * 3 + 4) + "s";
-  document.body.appendChild(heart);
-  setTimeout(() => heart.remove(), 7000);
-}
-setInterval(createHeart, 400);
-
-/* COUNTDOWN — CHANGE THIS DATE 💕 */
-const startDate = new Date("2025-07-08");
-const countdownEl = document.getElementById("countdown");
-
-function updateCountdown() {
-  const now = new Date();
-  const diff = now - startDate;
-
-  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-  countdownEl.innerHTML = `💞 ${days} days ${hours}h ${minutes}m ${seconds}s of loving you`;
-}
-
-// Initial call
-updateCountdown();
-
-// Update countdown every second
-setInterval(updateCountdown, 1000);
-
-
-/* YES BUTTON */
-document.getElementById("yesBtn").addEventListener("click", () => {
-  modal.classList.remove("show");
-});
-// Function to play music with fade-in
-function playMusic() {
-  sound.volume = 0; // start muted
-  sound.play().then(() => {
-    let vol = 0;
-    const fadeIn = setInterval(() => {
-      if (vol < 1) {
-        vol += 0.01;
-        sound.volume = vol;
-      } else {
-        clearInterval(fadeIn);
-      }
-    }, 30);
-  }).catch(err => {
-    console.log("Autoplay blocked, will play on first click.");
-  });
-}
-
-// Play music on first user interaction (for mobile/browser autoplay rules)
-document.body.addEventListener("click", playMusic, { once: true });
-document.body.addEventListener("touchstart", playMusic, { once: true });
-
-</script>
 <!-- BACKGROUND MUSIC -->
 <audio id="loveSound" loop>
   <source src="perfect.mp3" type="audio/mpeg">
   Your browser does not support the audio element.
 </audio>
+
 <script>
+// MUSIC
 const sound = document.getElementById("loveSound");
 
-// Play music from a specific time with fade-in
 function playMusicFrom(timeInSeconds = 0) {
-  sound.currentTime = timeInSeconds; // start from this time
-  sound.volume = 0; // start muted
+  sound.currentTime = timeInSeconds;
+  sound.volume = 0;
   sound.play().then(() => {
     let vol = 0;
     const fadeIn = setInterval(() => {
@@ -281,19 +162,83 @@ function playMusicFrom(timeInSeconds = 0) {
   });
 }
 
-// Try to play music automatically when page loads
+// Try autoplay when page loads
 window.addEventListener("load", () => {
-  playMusicFrom(20); // change 30 to any number of seconds you want
+  playMusicFrom(20);
 });
 
-// Fallback: play on first click if autoplay blocked
+// Fallback: play on first click/touch
 document.body.addEventListener("click", () => {
-  if (sound.paused) playMusicFrom(30);
+  if (sound.paused) playMusicFrom(0);
 }, { once: true });
-</script>
+document.body.addEventListener("touchstart", () => {
+  if (sound.paused) playMusicFrom(0);
+}, { once: true });
 
+// MODAL
+const modal = document.getElementById("modal");
+const openBtn = document.getElementById("openSurprise");
+const typingText = document.getElementById("typingText");
+const message = "Will you marry me one day babyyy and be mine forever and in every lifetime ?🥹💕\n\nWill you keep loving me forever?";
+
+openBtn.addEventListener("click", openModal);
+openBtn.addEventListener("touchstart", openModal);
+
+function openModal() {
+  modal.classList.add("show");
+  if (sound.paused) playMusicFrom(0);
+  startTyping();
+}
+
+// TYPING EFFECT
+let index = 0;
+function startTyping() {
+  typingText.innerHTML = "";
+  index = 0;
+  const interval = setInterval(() => {
+    typingText.innerHTML += message[index];
+    index++;
+    if (index >= message.length) clearInterval(interval);
+  }, 40);
+}
+
+// CLOSE MODAL
+document.getElementById("yesBtn").addEventListener("click", () => {
+  modal.classList.remove("show");
+});
+
+// HEARTS
+function createHeart() {
+  const heart = document.createElement("div");
+  heart.classList.add("heart");
+  heart.innerHTML = "💗";
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.animationDuration = (Math.random() * 3 + 4) + "s";
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 7000);
+}
+setInterval(createHeart, 400);
+
+// COUNTDOWN
+const startDate = new Date("2025-07-08");
+const countdownEl = document.getElementById("countdown");
+
+function updateCountdown() {
+  const now = new Date();
+  const diff = now - startDate;
+
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+  countdownEl.innerHTML = `💞 ${days} days ${hours}h ${minutes}m ${seconds}s of loving you`;
+}
+
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+</script>
 
 </body>
 </html>
-
-
